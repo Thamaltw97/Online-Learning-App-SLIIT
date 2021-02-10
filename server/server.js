@@ -13,15 +13,15 @@ dotenv.config();
 // Config PORT
 const PORT = 5000;
 
-// Connect DB
-// mongoose.connect(
-//     process.env.DB_CONTEXT,
-//     { useNewUrlParser: true, useUnifiedTopology: true },
-//     (err) => {
-//       if (err) throw err;
-//       console.log("Connected to the mongodb");
-//     }
-//   );
+//Connect DB
+mongoose.connect(
+  process.env.DB_CONTEXT,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  (err) => {
+    if (err) throw err;
+    console.log("Connected to the mongodb");
+  }
+);
 
 // Middlewares
 app.use(express.json());
@@ -31,6 +31,13 @@ app.use(
   })
 );
 
+// Import routes
+const StudentRoutes = require("./routes/StudentRoutes");
+const CourseRoutes = require("./routes/CourseRoutes");
+
+// Config routes
+app.use("/api/student/", StudentRoutes);
+app.use("/api/course/", CourseRoutes);
 
 // Start server
 app.listen(PORT, () => {

@@ -1,0 +1,43 @@
+.landImg {
+  /* margin: 10% 5% 10% 5%; */
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background:
+        /* top, transparent black, faked with gradient */ 
+        /* linear-gradient(
+          rgba(51, 51, 51, 0.5), 
+          rgba(51, 51, 51, 0.5)
+        ), */
+        /* bottom, image */ url(http://fc02.deviantart.net/fs71/i/2011/274/6/f/ocean__sky__stars__and_you_by_muddymelly-d4bg1ub.png);
+}
+
+#packages img {
+  margin-top: -50px;
+}
+
+#packages p {
+  font-weight: 500;
+}
+
+#packages .card {
+  border-radius: 0;
+  box-shadow: 5px 5px 15px #e74c3c;
+  transition: all 0.3s ease-in;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+}
+
+#packages .card:hover {
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 5px 5px 10px #9e9e9e;
+}
+
+#packages .card:hover h3 {
+  color: #fff;
+}
