@@ -1,4 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
+import Axios from "axios";
+import { useHistory } from "react-router-dom";
 import Img1 from "../images/sri-lanka-eta-visa.jpg";
 import Img2 from "../images/vatadage-temple-polonnaruwa_orig.jpg";
 import Img3 from "../images/sigiriya-rock-fortress_1_orig.jpg";
@@ -7,13 +9,29 @@ import Img5 from "../images/gangaramaya-temple-colombo-670x447_orig.jpg";
 import Img6 from "../images/temple-of-the-scared-tooth_1_orig.jpg";
 
 const HomePage = () => {
+  const history = useHistory();
+  const [courseList, setCourseList] = useState([]);
+
+  useEffect(() => {
+    Axios.post("http://localhost:5000/api/student/getstudentbyid", {
+      id: localStorage.getItem("user-id"),
+    })
+      .then((res) => {
+        setCourseList(res.data.courses);
+      })
+      .catch((err) => {
+        alert("Error in front-end!");
+      });
+    console.log(localStorage.getItem("user-id"));
+  }, []);
+
   const onEnrollClick = (courseName) => {
     const courseObj = {
       name: courseName,
       courseUserId: localStorage.getItem("user-id"),
     };
 
-    Axios.post("http://localhost:5000/api/course/getbyid", courseObj)
+    Axios.post("http://localhost:5000/api/student/addcourse", courseObj)
       .then((res) => {
         // setFormLoad(true);
         // localStorage.setItem('auth-token', res.data.token);
@@ -21,6 +39,36 @@ const HomePage = () => {
       })
       .catch((err) => {
         // alert('Error: ' + err);
+        alert("Error in front-end!");
+      });
+  };
+
+  const onUnenrollClick = (courseName) => {
+    const courseObj = {
+      name: courseName,
+      courseUserId: localStorage.getItem("user-id"),
+    };
+
+    Axios.post("http://localhost:5000/api/student/removecourse", courseObj)
+      .then((res) => {
+        // setFormLoad(true);
+        // localStorage.setItem('auth-token', res.data.token);
+        history.push("/home/");
+      })
+      .catch((err) => {
+        // alert('Error: ' + err);
+        alert("Error in front-end!");
+      });
+  };
+
+  const onViewClick = (courseName) => {
+    Axios.post("http://localhost:5000/api/course/getCourseId", {
+      name: courseName,
+    })
+      .then((res) => {
+        history.push("/home/view/" + res.data._id);
+      })
+      .catch((err) => {
         alert("Error in front-end!");
       });
   };
@@ -46,10 +94,39 @@ const HomePage = () => {
                 ></img>
                 <h3>Application Frameworks</h3>
                 <p>Application Frameworks</p>
-                {}
-                <button onClick={onEnrollClick("Application Frameworks")}>
-                  Enroll
-                </button>
+                {courseList &&
+                  courseList.map((course) => {
+                    if (course == "Application Frameworks") {
+                      return (
+                        <>
+                          <button
+                            onClick={() =>
+                              onUnenrollClick("Application Frameworks")
+                            }
+                          >
+                            Unenroll
+                          </button>
+                          <button
+                            onClick={() =>
+                              onViewClick("Application Frameworks")
+                            }
+                          >
+                            View
+                          </button>
+                        </>
+                      );
+                    } else {
+                      return (
+                        <button
+                          onClick={() =>
+                            onEnrollClick("Application Frameworks")
+                          }
+                        >
+                          Enroll
+                        </button>
+                      );
+                    }
+                  })}
               </div>
             </div>
           </div>
@@ -64,6 +141,35 @@ const HomePage = () => {
                 ></img>
                 <h3>Distributed Systems</h3>
                 <p>Distributed Systems</p>
+                {courseList &&
+                  courseList.map((course) => {
+                    if (course == "Distributed Systems") {
+                      return (
+                        <>
+                          <button
+                            onClick={() =>
+                              onUnenrollClick("Distributed Systems")
+                            }
+                          >
+                            Unenroll
+                          </button>
+                          <button
+                            onClick={() => onViewClick("Distributed Systems")}
+                          >
+                            View
+                          </button>
+                        </>
+                      );
+                    } else {
+                      return (
+                        <button
+                          onClick={() => onEnrollClick("Distributed Systems")}
+                        >
+                          Enroll
+                        </button>
+                      );
+                    }
+                  })}
               </div>
             </div>
           </div>
@@ -78,6 +184,7 @@ const HomePage = () => {
                 ></img>
                 <h3>Machine Learning</h3>
                 <p>Machine Learning</p>
+                <button disabled>Coming soon...</button>
               </div>
             </div>
           </div>
@@ -97,6 +204,7 @@ const HomePage = () => {
                 ></img>
                 <h3>Android Development</h3>
                 <p>Android Development</p>
+                <button disabled>Coming soon...</button>
               </div>
             </div>
           </div>
@@ -111,6 +219,7 @@ const HomePage = () => {
                 ></img>
                 <h3>IOS Development</h3>
                 <p>IOS Development</p>
+                <button disabled>Coming soon...</button>
               </div>
             </div>
           </div>
@@ -125,6 +234,7 @@ const HomePage = () => {
                 ></img>
                 <h3>Software Architecture</h3>
                 <p>Software Architecture</p>
+                <button disabled>Coming soon...</button>
               </div>
             </div>
           </div>
