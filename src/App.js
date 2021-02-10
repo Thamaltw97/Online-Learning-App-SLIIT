@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+} from "react-router-dom";
+import Swal from "sweetalert2";
 
 import Navigation from "./components/shared/Navigation";
 import GuestNav from "./components/shared/GuestNav";
@@ -9,6 +15,7 @@ import Register from "./components/user/Register";
 import Login from "./components/user/Login";
 
 function App() {
+  const history = useHistory();
   let [loggedNavStatus, setLoggedNavStatus] = useState("user");
 
   useEffect(() => {
@@ -19,6 +26,7 @@ function App() {
     }
   }, []);
 
+  //== Function to validate Login =========
   const validateLogin = (component) => {
     if (component === "/") {
       setLoggedNavStatus("guest");
@@ -26,10 +34,14 @@ function App() {
     } else if (localStorage.getItem("user-role") === "user") {
       setLoggedNavStatus("user");
       return <HomePage />;
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "No user logged in yet.!",
+      }).then(() => {
+        history.push("/");
+      });
     }
-    // else {
-    //   alert("No user logged in yet.!");
-    // }
   };
 
   return (
@@ -49,14 +61,9 @@ function App() {
                 <Route path="/register" component={Register} />
                 <Route path="/login" component={Login} />
                 <Route path="/home/view/:id" component={ViewCourse} />
-                {/* <Route path="/mypackages" component= {MyPackages} />
-                  <Route path="/package/upload" component= {RegPackage} /> */}
               </Switch>
             </div>
           </Router>
-          {/* <div>
-              <FooterHandler/>
-            </div> */}
         </div>
       }
     </div>

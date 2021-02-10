@@ -39,6 +39,9 @@ const CourseRoutes = require("./routes/CourseRoutes");
 app.use("/api/student/", StudentRoutes);
 app.use("/api/course/", CourseRoutes);
 
+// Config static URL path
+app.use("/document", express.static("docs"));
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is up and running on server on ${PORT}`);

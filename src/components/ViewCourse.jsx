@@ -1,10 +1,11 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
 
 const ViewCourse = () => {
   const [selectCourse, setSelectCourse] = useState([]);
 
   useEffect(() => {
+    //Get courses materials by Id.
     Axios.post("http://localhost:5000/api/course/getcoursebyid", {
       id: window.location.href.substring(
         window.location.href.lastIndexOf("/") + 1
@@ -16,9 +17,9 @@ const ViewCourse = () => {
       .catch((err) => {
         alert("Error in View Course Component !");
       });
-    // console.log(localStorage.getItem("user-id"));
   }, []);
 
+  //== Split to get Filename ==========
   const getFileName = (URL) => {
     let parts = URL.split("/");
     return parts.pop() || parts.pop();
@@ -31,7 +32,7 @@ const ViewCourse = () => {
           <div className="card-body">
             <h5 className="card-title">
               {typeof selectCourse.courseName === "undefined"
-                ? "Please select one course"
+                ? "Please select course"
                 : null}
               {selectCourse && selectCourse.courseName}
             </h5>

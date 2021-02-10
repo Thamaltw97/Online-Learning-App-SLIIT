@@ -14,9 +14,8 @@ router.post("/getCourseId", async (req, res) => {
 
 router.post("/getcoursebyid", async (req, res) => {
   try {
-    // console.log(course);
     const course = await Course.findById(req.body.id);
-    console.log(course);
+    // console.log(course);
     res.send(course);
   } catch (err) {
     res.status(500).json("Error from server: " + err.message);
